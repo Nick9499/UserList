@@ -39,7 +39,7 @@ const User = () => {
 		}
 	}
 
-	return (
+	return user ? (
 		<div className='m-5'>
 			<Row className='m-10'>
 				<Col>
@@ -64,12 +64,13 @@ const User = () => {
 					<Row className='tabs'>
 						<Col>
 							<h4 onClick={() => handleClick(notes)}>
-								Notes <sup>{user.notes.length}</sup>{" "}
+								Notes <sup>{user.notes && user.notes.length}</sup>{" "}
 							</h4>
 						</Col>
 						<Col>
 							<h4 onClick={() => handleClick(instructions)}>
-								Instructions<sup>{user.instructions.length}</sup>{" "}
+								Instructions
+								<sup>{user.instructions && user.instructions.length}</sup>{" "}
 							</h4>
 						</Col>
 						<Col>
@@ -85,13 +86,17 @@ const User = () => {
 						</Col>
 					</Row>
 					<Row className='m-5'>
-						{notes && <Notes notes={user.notes} />}
-						{instructions && <Instructions instructions={user.instructions} />}
+						{user.notes && notes && <Notes notes={user.notes} />}
+						{user.instructions && instructions && (
+							<Instructions instructions={user.instructions} />
+						)}
 						{analysis && <Analysis />}
 					</Row>
 				</Col>
 			</Row>
 		</div>
+	) : (
+		<h2>Loading</h2>
 	)
 }
 
