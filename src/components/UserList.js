@@ -1,17 +1,22 @@
 import React from "react"
 import { useState } from "react"
 import { useEffect } from "react"
-import { Table, Image, Button } from "react-bootstrap"
+import { Table, Image, Modal, Form } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
-import { listUsers } from "../actions/userAction"
+import { findUserBy, listUsers } from "../actions/userAction"
 import ResizableTable from "../Resizable"
+import UserCard from "./UserCard"
 
 const UserList = () => {
 	let history = useHistory()
+	const [search, setSearch] = useState("")
 	const [sortAsc, setSortAsc] = useState(true)
-	const [value, setValue] = useState("")
-	const [showSearch, setShowSearch] = useState(false)
+	const [show, setShow] = useState(false)
+
+	const handleClose = () => setShow(false)
+	const handleShow = () => setShow(true)
+
 	const dispatch = useDispatch()
 	const userList = useSelector((state) => state.userList)
 	const { users } = userList
@@ -95,36 +100,42 @@ const UserList = () => {
 		setSortAsc((prev) => !prev)
 	}
 
-	const filterHandler = () => {
-		const newUser = users.filter((user) => user.name === value)
-		console.log(newUser)
-	}
-
 	const handleClick = (id) => {
 		history.push(`/user/${id}`)
 	}
+	const inputHandler = (e) => {
+		setSearch(e.target.value)
+	}
+	const filterFunction = (val) => {
+		if (search === "") {
+			return val
+		} else if (val.name.toLowerCase().includes(search.toLowerCase())) {
+			return val
+		}
+	}
+	const modal = (
+		<Modal show={show} onHide={handleClose}>
+			<Modal.Header closeButton>
+				<Modal.Title>Filter</Modal.Title>
+			</Modal.Header>
+			<Form.Group className='m-3' controlId='exampleForm.ControlInput1'>
+				<Form.Control
+					type='text'
+					placeholder='Search'
+					value={search}
+					onChange={inputHandler}
+				/>
+			</Form.Group>
+		</Modal>
+	)
 	return (
 		<div className='mt-5'>
-			<Table striped bordered hover>
+			{modal}
+			<Table striped bordered hover className='table'>
 				<thead>
 					<tr>
 						<th colSpan='5' className='text-center'>
-							Contact List{" "}
-							<i
-								className='fas fa-filter '
-								onClick={() => setShowSearch((prev) => !prev)}
-							></i>
-							{showSearch && (
-								<>
-									<input
-										type='text'
-										style={{ marginLeft: "5%", marginRight: "5%" }}
-										value={value}
-										onChange={(e) => setValue(e.target.value)}
-									/>
-									<Button onClick={filterHandler}>search</Button>
-								</>
-							)}
+							Contact List
 						</th>
 					</tr>
 				</thead>
@@ -144,7 +155,9 @@ const UserList = () => {
 										className='fas fa-sort-amount-down'
 										onClick={descNameSortHandler}
 									></i>
-								)}{" "}
+								)}
+								{"   "}
+								<i className='fas fa-filter ' onClick={handleShow}></i>
 							</td>
 							<td>
 								Email{"  "}
@@ -158,7 +171,9 @@ const UserList = () => {
 										className='fas fa-sort-amount-down'
 										onClick={descNameSortHandler}
 									></i>
-								)}{" "}
+								)}
+								{"   "}
+								<i className='fas fa-filter ' onClick={handleShow}></i>
 							</td>
 							<td>
 								Phone
@@ -173,6 +188,8 @@ const UserList = () => {
 										onClick={descPhoneSortHandler}
 									></i>
 								)}
+								{"   "}
+								<i className='fas fa-filter ' onClick={handleShow}></i>
 							</td>
 							<td>
 								City{" "}
@@ -187,9 +204,11 @@ const UserList = () => {
 										onClick={descCitySortHandler}
 									></i>
 								)}
+								{"   "}
+								<i className='fas fa-filter ' onClick={handleShow}></i>
 							</td>
 						</tr>
-						{users.map((user) => (
+						{users.filter(filterFunction).map((user) => (
 							<tr key={user.id} onClick={() => handleClick(user.id)}>
 								<td>
 									<Image
@@ -208,6 +227,7 @@ const UserList = () => {
 					</tbody>
 				</ResizableTable>
 			</Table>
+			<UserCard users={users} handleClick={handleClick} />
 		</div>
 	)
 }

@@ -42,7 +42,7 @@ const User = () => {
 	return user ? (
 		<div className='m-5'>
 			<Row className='m-10'>
-				<Col>
+				<Col xs={12} md={6}>
 					<Image
 						src={user.url}
 						fluid

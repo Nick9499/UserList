@@ -1,4 +1,8 @@
-import { SINGLE_USER, USER_SUCCESS } from "../constants/userConstants"
+import {
+	FIND_USER_BY,
+	SINGLE_USER,
+	USER_SUCCESS,
+} from "../constants/userConstants"
 import { contacts } from "../data"
 
 export const listUsers = () => async (dispatch) => {
@@ -13,5 +17,16 @@ export const singleUser = (id) => (dispatch) => {
 	dispatch({
 		type: SINGLE_USER,
 		payload: singleUser,
+	})
+}
+
+export const findUserBy = (search) => (dispatch) => {
+	const foundUser = contacts.filter((user) =>
+		user.name.prop.toLowerCase().includes(search.toLowerCase())
+	)
+
+	dispatch({
+		type: FIND_USER_BY,
+		payload: foundUser,
 	})
 }
