@@ -14,12 +14,12 @@ const Notes = () => {
 
 	useEffect(() => {
 		dispatch(getNotes(user.id))
-		setValue("")
 	}, [dispatch, user.id])
 
 	const addHandler = (e) => {
 		e.preventDefault()
 		dispatch(addNotes(user.id, value))
+		setValue("")
 	}
 
 	return (

@@ -11,21 +11,22 @@ const Instructions = () => {
 
 	useEffect(() => {
 		dispatch(getInstructions(user.id))
-		setValue("")
 	}, [dispatch, user.id])
 
 	const addHandler = (e) => {
 		e.preventDefault()
 		dispatch(addInstructions(user.id, value))
+		setValue("")
 	}
 
 	return (
 		<div>
-			{instructions.map((instruction, index) => (
-				<Card key={index} className='mb-2'>
-					<Card.Body>{instruction.p}</Card.Body>
-				</Card>
-			))}
+			{instructions &&
+				instructions.map((instruction, index) => (
+					<Card key={index} className='mb-2'>
+						<Card.Body>{instruction.p}</Card.Body>
+					</Card>
+				))}
 			<Form>
 				<Form.Group className='mb-3' controlId='formBasicEmail'>
 					<Form.Label>Add Instructions</Form.Label>
