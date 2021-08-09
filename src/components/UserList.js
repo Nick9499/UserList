@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { Table, Image, Modal, Form } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
-import { findUserBy, listUsers } from "../actions/userAction"
+import { listUsers } from "../actions/userAction"
 import ResizableTable from "../Resizable"
 import UserCard from "./UserCard"
 

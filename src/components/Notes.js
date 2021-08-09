@@ -1,12 +1,26 @@
 import React, { useState } from "react"
-import { Button, Card, Form } from "react-bootstrap"
+import { useEffect } from "react"
 
-const Notes = ({ notes }) => {
+import { Button, Card, Form } from "react-bootstrap"
+import { useDispatch, useSelector } from "react-redux"
+import { addNotes, getNotes } from "../actions/userAction"
+/* import { addNotes } from "../actions/userAction" */
+
+const Notes = () => {
 	const [value, setValue] = useState("")
+	const dispatch = useDispatch()
+	const userList = useSelector((state) => state.userList)
+	const { user, notes } = userList
+
+	useEffect(() => {
+		dispatch(getNotes(user.id))
+	}, [dispatch, user.id])
+
 	const addHandler = (e) => {
 		e.preventDefault()
-		notes.push({ p: value })
+		dispatch(addNotes(user.id, value))
 	}
+
 	return (
 		<div>
 			{notes.map((note, index) => (

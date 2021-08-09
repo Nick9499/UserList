@@ -1,5 +1,7 @@
 import {
-	FIND_USER_BY,
+	ADD_NOTES,
+	GET_INSTRUCTIONS,
+	GET_NOTES,
 	SINGLE_USER,
 	USER_SUCCESS,
 } from "../constants/userConstants"
@@ -12,7 +14,7 @@ export const listUsers = () => async (dispatch) => {
 	})
 }
 
-export const singleUser = (id) => (dispatch) => {
+export const singleUser = (id) => async (dispatch) => {
 	const singleUser = contacts.find((user) => user.id.toString() === id)
 	dispatch({
 		type: SINGLE_USER,
@@ -20,13 +22,38 @@ export const singleUser = (id) => (dispatch) => {
 	})
 }
 
-export const findUserBy = (search) => (dispatch) => {
-	const foundUser = contacts.filter((user) =>
-		user.name.prop.toLowerCase().includes(search.toLowerCase())
-	)
+export const getNotes = (id) => async (dispatch) => {
+	const singleUser = contacts.find((user) => user.id === id)
 
 	dispatch({
-		type: FIND_USER_BY,
-		payload: foundUser,
+		type: GET_NOTES,
+		payload: singleUser.notes,
+	})
+}
+
+export const addNotes = (id, value) => async (dispatch) => {
+	const singleUser = contacts.find((user) => user.id === id)
+	singleUser.notes.push({ p: value })
+	dispatch({
+		type: ADD_NOTES,
+		payload: singleUser.notes,
+	})
+}
+
+export const getInstructions = (id) => async (dispatch) => {
+	const singleUser = contacts.find((user) => user.id === id)
+
+	dispatch({
+		type: GET_INSTRUCTIONS,
+		payload: singleUser.instructions,
+	})
+}
+
+export const addInstructions = (id, value) => async (dispatch) => {
+	const singleUser = contacts.find((user) => user.id === id)
+	singleUser.instructions.push({ p: value })
+	dispatch({
+		type: ADD_NOTES,
+		payload: singleUser.instructions,
 	})
 }

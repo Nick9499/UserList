@@ -86,10 +86,8 @@ const User = () => {
 						</Col>
 					</Row>
 					<Row className='m-5'>
-						{user.notes && notes && <Notes notes={user.notes} />}
-						{user.instructions && instructions && (
-							<Instructions instructions={user.instructions} />
-						)}
+						{user.notes && notes && <Notes />}
+						{user.instructions && instructions && <Instructions user={user} />}
 						{analysis && <Analysis />}
 					</Row>
 				</Col>

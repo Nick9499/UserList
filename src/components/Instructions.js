@@ -1,13 +1,23 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button, Card, Form } from "react-bootstrap"
-const Instructions = ({ instructions }) => {
+import { useDispatch, useSelector } from "react-redux"
+import { addInstructions, getInstructions } from "../actions/userAction"
+
+const Instructions = () => {
 	const [value, setValue] = useState("")
+	const dispatch = useDispatch()
+	const userList = useSelector((state) => state.userList)
+	const { user, instructions } = userList
+
+	useEffect(() => {
+		dispatch(getInstructions(user.id))
+	}, [dispatch, user.id])
+
 	const addHandler = (e) => {
 		e.preventDefault()
-		if (value.trim() !== "") {
-			instructions.push({ p: value })
-		}
+		dispatch(addInstructions(user.id, value))
 	}
+
 	return (
 		<div>
 			{instructions.map((instruction, index) => (
