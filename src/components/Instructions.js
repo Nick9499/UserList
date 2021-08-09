@@ -11,6 +11,7 @@ const Instructions = () => {
 
 	useEffect(() => {
 		dispatch(getInstructions(user.id))
+		setValue("")
 	}, [dispatch, user.id])
 
 	const addHandler = (e) => {
